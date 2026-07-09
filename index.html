@@ -3,688 +3,691 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>猜拳小遊戲</title>
-<style>
- /* ========================================
-   基礎設定
-======================================== */
 
-:root {
-  --bg-page: #f5f1e9;
-  --bg-card: rgba(255, 255, 255, 0.88);
-  --bg-soft: #f8f5ef;
+    <title>跟哆啦A夢猜拳</title>
 
-  --sage: #8f9d8b;
-  --sage-dark: #687565;
-  --sage-light: #e4e9e1;
+    <style>
+      /* ========================================
+         基礎設定
+      ======================================== */
 
-  --beige: #d8c7b3;
-  --beige-light: #eee5da;
+      :root {
+        --bg-page: #f5f1e9;
+        --bg-card: rgba(255, 255, 255, 0.88);
+        --bg-soft: #f8f5ef;
 
-  --text-main: #4f514c;
-  --text-soft: #7c7f77;
-  --text-light: #9a9c96;
+        --sage: #8f9d8b;
+        --sage-dark: #687565;
+        --sage-light: #e4e9e1;
 
-  --border: rgba(126, 137, 123, 0.22);
+        --beige: #d8c7b3;
+        --beige-light: #eee5da;
 
-  --shadow-soft:
-    0 18px 45px rgba(79, 81, 76, 0.1),
-    0 4px 12px rgba(79, 81, 76, 0.06);
+        --text-main: #4f514c;
+        --text-soft: #7c7f77;
+        --text-light: #9a9c96;
 
-  --shadow-card:
-    0 12px 30px rgba(79, 81, 76, 0.09),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
-}
+        --border: rgba(126, 137, 123, 0.22);
 
-* {
-  box-sizing: border-box;
-}
+        --shadow-soft:
+          0 18px 45px rgba(79, 81, 76, 0.1),
+          0 4px 12px rgba(79, 81, 76, 0.06);
 
-html {
-  min-height: 100%;
-}
+        --shadow-card:
+          0 12px 30px rgba(79, 81, 76, 0.09),
+          inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      }
 
-body {
-  margin: 0;
-  min-height: 100vh;
+      * {
+        box-sizing: border-box;
+      }
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+      html {
+        min-height: 100%;
+      }
 
-  padding: 40px 24px;
+      body {
+        margin: 0;
+        min-height: 100vh;
 
-  font-family:
-    "Noto Sans TC",
-    "Microsoft JhengHei",
-    sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-  color: var(--text-main);
+        padding: 40px 24px;
 
-  background:
-    radial-gradient(
-      circle at 15% 20%,
-      rgba(216, 199, 179, 0.28),
-      transparent 32%
-    ),
-    radial-gradient(
-      circle at 85% 80%,
-      rgba(143, 157, 139, 0.22),
-      transparent 34%
-    ),
-    var(--bg-page);
-}
+        font-family:
+          "Noto Sans TC",
+          "Microsoft JhengHei",
+          sans-serif;
 
-/* ========================================
-   遊戲主卡片
-======================================== */
+        color: var(--text-main);
 
-.game {
-  position: relative;
+        background:
+          radial-gradient(
+            circle at 15% 20%,
+            rgba(216, 199, 179, 0.28),
+            transparent 32%
+          ),
+          radial-gradient(
+            circle at 85% 80%,
+            rgba(143, 157, 139, 0.22),
+            transparent 34%
+          ),
+          var(--bg-page);
+      }
 
-  width: min(1180px, 100%);
+      /* ========================================
+         遊戲主卡片
+      ======================================== */
 
-  padding: 48px;
+      .game {
+        position: relative;
 
-  overflow: hidden;
+        width: min(1180px, 100%);
 
-  text-align: center;
+        padding: 48px;
 
-  background: var(--bg-card);
+        overflow: hidden;
 
-  border: 1px solid rgba(255, 255, 255, 0.85);
-  border-radius: 32px;
+        text-align: center;
 
-  box-shadow: var(--shadow-soft);
+        background: var(--bg-card);
 
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-}
+        border: 1px solid rgba(255, 255, 255, 0.85);
+        border-radius: 32px;
 
-/* 淡淡的背景裝飾 */
-.game::before,
-.game::after {
-  content: "";
+        box-shadow: var(--shadow-soft);
 
-  position: absolute;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+      }
 
-  width: 220px;
-  height: 220px;
+      .game::before,
+      .game::after {
+        content: "";
 
-  border-radius: 50%;
+        position: absolute;
 
-  pointer-events: none;
-}
+        width: 220px;
+        height: 220px;
 
-.game::before {
-  top: -100px;
-  left: -80px;
+        border-radius: 50%;
 
-  background: rgba(216, 199, 179, 0.18);
-}
+        pointer-events: none;
+      }
 
-.game::after {
-  right: -90px;
-  bottom: -110px;
+      .game::before {
+        top: -100px;
+        left: -80px;
 
-  background: rgba(143, 157, 139, 0.16);
-}
+        background: rgba(216, 199, 179, 0.18);
+      }
 
-/* ========================================
-   標題區
-======================================== */
+      .game::after {
+        right: -90px;
+        bottom: -110px;
 
-h1 {
-  position: relative;
-  z-index: 1;
+        background: rgba(143, 157, 139, 0.16);
+      }
 
-  margin: 0 0 12px;
+      /* ========================================
+         標題區
+      ======================================== */
 
-  font-family:
-    Georgia,
-    "Noto Serif TC",
-    serif;
+      h1 {
+        position: relative;
+        z-index: 1;
 
-  font-size: clamp(32px, 4vw, 50px);
-  font-weight: 600;
-  letter-spacing: 0.04em;
+        margin: 0 0 12px;
 
-  color: var(--sage-dark);
-}
+        font-family:
+          Georgia,
+          "Noto Serif TC",
+          serif;
 
-#rule {
-  position: relative;
-  z-index: 1;
+        font-size: clamp(32px, 4vw, 50px);
+        font-weight: 600;
+        letter-spacing: 0.04em;
 
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
+        color: var(--sage-dark);
+      }
 
-  margin: 0;
+      #rule {
+        position: relative;
+        z-index: 1;
 
-  padding: 9px 18px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
 
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+        margin: 0;
 
-  color: var(--sage-dark);
-  background: var(--sage-light);
+        padding: 9px 18px;
 
-  border: 1px solid rgba(143, 157, 139, 0.2);
-  border-radius: 999px;
-}
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
 
-/* ========================================
-   對戰區
-======================================== */
+        color: var(--sage-dark);
+        background: var(--sage-light);
 
-.battle-area {
-  position: relative;
-  z-index: 1;
+        border: 1px solid rgba(143, 157, 139, 0.2);
+        border-radius: 999px;
+      }
 
-  display: grid;
-  grid-template-columns: minmax(240px, 1fr) minmax(260px, 0.82fr) minmax(
-      240px,
-      1fr
-    );
-  align-items: stretch;
-  gap: 28px;
+      /* ========================================
+         對戰區
+      ======================================== */
 
-  margin-top: 42px;
-}
+      .battle-area {
+        position: relative;
+        z-index: 1;
 
-/* ========================================
-   玩家卡片
-======================================== */
+        display: grid;
+        grid-template-columns:
+          minmax(240px, 1fr)
+          minmax(260px, 0.82fr)
+          minmax(240px, 1fr);
 
-.player-box {
-  width: 100%;
-  min-height: 420px;
+        align-items: stretch;
+        gap: 28px;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+        margin-top: 42px;
+      }
 
-  padding: 28px 24px 32px;
+      /* ========================================
+         玩家卡片
+      ======================================== */
 
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.94),
-      rgba(248, 245, 239, 0.9)
-    );
+      .player-box {
+        width: 100%;
+        min-height: 420px;
 
-  border: 1px solid var(--border);
-  border-radius: 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
-  box-shadow: var(--shadow-card);
-}
+        padding: 28px 24px 32px;
 
-.player-box h2 {
-  margin: 0 0 24px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.94),
+          rgba(248, 245, 239, 0.9)
+        );
 
-  padding: 8px 18px;
+        border: 1px solid var(--border);
+        border-radius: 24px;
 
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+        box-shadow: var(--shadow-card);
+      }
 
-  color: var(--sage-dark);
-  background: var(--sage-light);
+      .player-box h2 {
+        margin: 0 0 24px;
 
-  border-radius: 999px;
-}
+        padding: 8px 18px;
 
-/* 左右稍微做區別 */
-.player-box:first-child h2 {
-  color: #806b59;
-  background: var(--beige-light);
-}
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
 
-.player-box:last-child h2 {
-  color: var(--sage-dark);
-  background: var(--sage-light);
-}
+        color: var(--sage-dark);
+        background: var(--sage-light);
 
-/* ========================================
-   出拳圖片區
-======================================== */
+        border-radius: 999px;
+      }
 
-.hand-area {
-  width: 100%;
-  flex: 1;
-  min-height: 280px;
+      .player-box:first-child h2 {
+        color: #806b59;
+        background: var(--beige-light);
+      }
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+      .player-box:last-child h2 {
+        color: var(--sage-dark);
+        background: var(--sage-light);
+      }
 
-  overflow: hidden;
+      /* ========================================
+         出拳圖片區
+      ======================================== */
 
-  font-size: 76px;
+      .hand-area {
+        width: 100%;
+        flex: 1;
+        min-height: 280px;
 
-  color: var(--text-light);
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-  background:
-    radial-gradient(
-      circle,
-      rgba(255, 255, 255, 0.98),
-      rgba(238, 229, 218, 0.42)
-    );
+        overflow: hidden;
 
-  border: 1px dashed rgba(143, 157, 139, 0.3);
-  border-radius: 20px;
-}
+        font-size: 76px;
 
-.player-box:last-child .hand-area {
-  background:
-    radial-gradient(
-      circle,
-      rgba(255, 255, 255, 0.98),
-      rgba(228, 233, 225, 0.55)
-    );
-}
+        color: var(--text-light);
 
-.hand-area img {
-  display: block;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.98),
+          rgba(238, 229, 218, 0.42)
+        );
 
-  width: min(260px, 90%);
-  height: 260px;
+        border: 1px dashed rgba(143, 157, 139, 0.3);
+        border-radius: 20px;
+      }
 
-  object-fit: contain;
+      .player-box:last-child .hand-area {
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.98),
+          rgba(228, 233, 225, 0.55)
+        );
+      }
 
-  border-radius: 16px;
+      .hand-area img {
+        display: block;
 
-  animation: hand-pop 0.28s ease;
-}
+        width: min(260px, 90%);
+        height: 260px;
 
-@keyframes hand-pop {
-  from {
-    opacity: 0;
-    transform: scale(0.88);
-  }
+        object-fit: contain;
 
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
+        border-radius: 16px;
 
-/* ========================================
-   中央結果區
-======================================== */
+        animation: hand-pop 0.28s ease;
+      }
 
-.center {
-  width: 100%;
-  min-height: 420px;
+      @keyframes hand-pop {
+        from {
+          opacity: 0;
+          transform: scale(0.88);
+        }
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
 
-  padding: 30px 22px;
+      /* ========================================
+         中央結果區
+      ======================================== */
 
-  background: rgba(248, 245, 239, 0.72);
+      .center {
+        width: 100%;
+        min-height: 420px;
 
-  border: 1px solid rgba(216, 199, 179, 0.34);
-  border-radius: 24px;
-}
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
 
-#choiceresult {
-  min-height: 58px;
+        padding: 30px 22px;
 
-  margin: 0 0 12px;
+        background: rgba(248, 245, 239, 0.72);
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+        border: 1px solid rgba(216, 199, 179, 0.34);
+        border-radius: 24px;
+      }
 
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 1.7;
+      #choiceresult {
+        min-height: 58px;
 
-  color: var(--text-main);
-}
+        margin: 0 0 12px;
 
-#winnerresult {
-  min-height: 52px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-  margin: 0 0 22px;
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 1.7;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+        color: var(--text-main);
+      }
 
-  font-family:
-    Georgia,
-    "Noto Serif TC",
-    serif;
+      #winnerresult {
+        min-height: 52px;
 
-  font-size: clamp(24px, 3vw, 34px);
-  font-weight: 700;
-  line-height: 1.5;
+        margin: 0 0 22px;
 
-  color: var(--sage-dark);
-}
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-/* ========================================
-   按鈕區
-======================================== */
+        font-family:
+          Georgia,
+          "Noto Serif TC",
+          serif;
 
-.buttons {
-  width: 100%;
+        font-size: clamp(24px, 3vw, 34px);
+        font-weight: 700;
+        line-height: 1.5;
 
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+        color: var(--sage-dark);
+      }
 
-  margin-top: 4px;
-}
+      /* ========================================
+         按鈕區
+      ======================================== */
 
-button {
-  min-height: 46px;
+      .buttons {
+        width: 100%;
 
-  padding: 10px 14px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
 
-  border: 1px solid rgba(143, 157, 139, 0.28);
-  border-radius: 14px;
+        margin-top: 4px;
+      }
 
-  font: inherit;
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+      button {
+        min-height: 46px;
 
-  color: #ffffff;
-  background: var(--sage);
+        padding: 10px 14px;
 
-  cursor: pointer;
+        border: 1px solid rgba(143, 157, 139, 0.28);
+        border-radius: 14px;
 
-  box-shadow:
-    0 7px 16px rgba(104, 117, 101, 0.17),
-    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+        font: inherit;
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
 
-  transition:
-    transform 0.2s ease,
-    background-color 0.2s ease,
-    box-shadow 0.2s ease,
-    border-color 0.2s ease;
-}
+        color: #ffffff;
+        background: var(--sage);
 
-button:hover {
-  background: var(--sage-dark);
+        cursor: pointer;
 
-  border-color: var(--sage-dark);
+        box-shadow:
+          0 7px 16px rgba(104, 117, 101, 0.17),
+          inset 0 1px 0 rgba(255, 255, 255, 0.24);
 
-  transform: translateY(-2px);
+        transition:
+          transform 0.2s ease,
+          background-color 0.2s ease,
+          box-shadow 0.2s ease,
+          border-color 0.2s ease;
+      }
 
-  box-shadow:
-    0 10px 20px rgba(104, 117, 101, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
+      button:hover {
+        background: var(--sage-dark);
 
-button:active {
-  transform: translateY(0) scale(0.97);
-}
+        border-color: var(--sage-dark);
 
-/* 重新開始按鈕獨立一行 */
-button:last-child {
-  grid-column: 1 / -1;
+        transform: translateY(-2px);
 
-  color: #806b59;
-  background: var(--beige-light);
+        box-shadow:
+          0 10px 20px rgba(104, 117, 101, 0.22),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      }
 
-  border-color: rgba(216, 199, 179, 0.55);
+      button:active {
+        transform: translateY(0) scale(0.97);
+      }
 
-  box-shadow: none;
-}
+      button:last-child {
+        grid-column: 1 / -1;
 
-button:last-child:hover {
-  color: #ffffff;
-  background: #a78f77;
+        color: #806b59;
+        background: var(--beige-light);
 
-  border-color: #a78f77;
-}
+        border-color: rgba(216, 199, 179, 0.55);
 
-/* ========================================
-   分數
-======================================== */
+        box-shadow: none;
+      }
 
-#score {
-  width: 100%;
+      button:last-child:hover {
+        color: #ffffff;
+        background: #a78f77;
 
-  margin: 24px 0 0;
+        border-color: #a78f77;
+      }
 
-  padding: 12px 16px;
+      /* ========================================
+         分數
+      ======================================== */
 
-  font-size: 17px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+      #score {
+        width: 100%;
 
-  color: var(--sage-dark);
-  background: rgba(228, 233, 225, 0.76);
+        margin: 24px 0 0;
 
-  border: 1px solid rgba(143, 157, 139, 0.18);
-  border-radius: 14px;
-}
+        padding: 12px 16px;
 
-/* ========================================
-   平板版
-======================================== */
+        font-size: 17px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
 
-@media (max-width: 960px) {
-  body {
-    align-items: flex-start;
+        color: var(--sage-dark);
+        background: rgba(228, 233, 225, 0.76);
 
-    padding: 24px 18px;
-  }
+        border: 1px solid rgba(143, 157, 139, 0.18);
+        border-radius: 14px;
+      }
 
-  .game {
-    padding: 36px 28px;
-  }
+      /* ========================================
+         平板版
+      ======================================== */
 
-  .battle-area {
-    grid-template-columns: 1fr 1fr;
-  }
+      @media (max-width: 960px) {
+        body {
+          align-items: flex-start;
 
-  .center {
-    grid-column: 1 / -1;
-    grid-row: 2;
+          padding: 24px 18px;
+        }
 
-    min-height: auto;
-  }
+        .game {
+          padding: 36px 28px;
+        }
 
-  .player-box {
-    min-height: 360px;
-  }
+        .battle-area {
+          grid-template-columns: 1fr 1fr;
+        }
 
-  .hand-area {
-    min-height: 230px;
-  }
+        .center {
+          grid-column: 1 / -1;
+          grid-row: 2;
 
-  .hand-area img {
-    width: min(220px, 88%);
-    height: 220px;
-  }
-}
+          min-height: auto;
+        }
 
-/* ========================================
-   手機版
-======================================== */
+        .player-box {
+          min-height: 360px;
+        }
 
-@media (max-width: 640px) {
-  body {
-    padding: 14px;
-  }
+        .hand-area {
+          min-height: 230px;
+        }
 
-  .game {
-    padding: 28px 16px;
+        .hand-area img {
+          width: min(220px, 88%);
+          height: 220px;
+        }
+      }
 
-    border-radius: 24px;
-  }
+      /* ========================================
+         手機版
+      ======================================== */
 
-  h1 {
-    font-size: 30px;
-    line-height: 1.35;
-  }
+      @media (max-width: 640px) {
+        body {
+          padding: 14px;
+        }
 
-  #rule {
-    font-size: 14px;
-  }
+        .game {
+          padding: 28px 16px;
 
-  .battle-area {
-    display: flex;
-    flex-direction: column;
+          border-radius: 24px;
+        }
 
-    gap: 18px;
+        h1 {
+          font-size: 30px;
+          line-height: 1.35;
+        }
 
-    margin-top: 28px;
-  }
+        #rule {
+          font-size: 14px;
+        }
 
-  /* 手機版順序：
-     哆啦A夢 → 玩家 → 結果與按鈕
-  */
-  .player-box:first-child {
-    order: 1;
-  }
+        .battle-area {
+          display: flex;
+          flex-direction: column;
 
-  .player-box:last-child {
-    order: 2;
-  }
+          gap: 18px;
 
-  .center {
-    order: 3;
-  }
+          margin-top: 28px;
+        }
 
-  .player-box {
-    min-height: auto;
+        .player-box:first-child {
+          order: 1;
+        }
 
-    padding: 22px 18px;
+        .player-box:last-child {
+          order: 2;
+        }
 
-    border-radius: 20px;
-  }
+        .center {
+          order: 3;
+        }
 
-  .player-box h2 {
-    margin-bottom: 18px;
+        .player-box {
+          min-height: auto;
 
-    font-size: 18px;
-  }
+          padding: 22px 18px;
 
-  .hand-area {
-    min-height: 240px;
+          border-radius: 20px;
+        }
 
-    font-size: 64px;
-  }
+        .player-box h2 {
+          margin-bottom: 18px;
 
-  .hand-area img {
-    width: min(230px, 90%);
-    height: 230px;
-  }
+          font-size: 18px;
+        }
 
-  .center {
-    min-height: auto;
+        .hand-area {
+          min-height: 240px;
 
-    padding: 26px 18px;
+          font-size: 64px;
+        }
 
-    border-radius: 20px;
-  }
+        .hand-area img {
+          width: min(230px, 90%);
+          height: 230px;
+        }
 
-  #choiceresult {
-    min-height: auto;
+        .center {
+          min-height: auto;
 
-    font-size: 16px;
-  }
+          padding: 26px 18px;
 
-  #winnerresult {
-    min-height: 42px;
+          border-radius: 20px;
+        }
 
-    margin-bottom: 18px;
+        #choiceresult {
+          min-height: auto;
 
-    font-size: 25px;
-  }
+          font-size: 16px;
+        }
 
-  .buttons {
-    grid-template-columns: 1fr;
-  }
+        #winnerresult {
+          min-height: 42px;
 
-  button:last-child {
-    grid-column: auto;
-  }
+          margin-bottom: 18px;
 
-  button {
-    width: 100%;
+          font-size: 25px;
+        }
 
-    min-height: 48px;
-  }
+        .buttons {
+          grid-template-columns: 1fr;
+        }
 
-  #score {
-    font-size: 15px;
-  }
-}
+        button:last-child {
+          grid-column: auto;
+        }
 
-/* ========================================
-   小尺寸手機
-======================================== */
+        button {
+          width: 100%;
 
-@media (max-width: 390px) {
-  .game {
-    padding-inline: 14px;
-  }
+          min-height: 48px;
+        }
 
-  h1 {
-    font-size: 26px;
-  }
+        #score {
+          font-size: 15px;
+        }
+      }
 
-  .hand-area {
-    min-height: 210px;
-  }
+      /* ========================================
+         小尺寸手機
+      ======================================== */
 
-  .hand-area img {
-    width: min(200px, 90%);
-    height: 200px;
-  }
-}
+      @media (max-width: 390px) {
+        .game {
+          padding-inline: 14px;
+        }
 
-/* ========================================
-   減少動態效果
-======================================== */
+        h1 {
+          font-size: 26px;
+        }
 
-@media (prefers-reduced-motion: reduce) {
-  button,
-  .hand-area img {
-    animation: none;
-    transition: none;
-  }
-}
-  </style>
+        .hand-area {
+          min-height: 210px;
+        }
+
+        .hand-area img {
+          width: min(200px, 90%);
+          height: 200px;
+        }
+      }
+
+      /* ========================================
+         減少動態效果
+      ======================================== */
+
+      @media (prefers-reduced-motion: reduce) {
+        button,
+        .hand-area img {
+          animation: none;
+          transition: none;
+        }
+      }
+    </style>
   </head>
 
   <body>
-    <div class="game">
-      <h1>跟哆啦A夢猜拳•͈ ₃ •͈</h1>
+    <main class="game">
+      <h1>跟哆啦A夢猜拳</h1>
+
       <p id="rule">先贏三局的人獲勝</p>
-      <div class="battle-area">
+
+      <section class="battle-area">
         <div class="player-box">
           <h2>哆啦A夢</h2>
+
           <div id="computerHand" class="hand-area">❔</div>
         </div>
 
         <div class="center">
           <p id="choiceresult">請選擇出拳！</p>
+
           <p id="winnerresult"></p>
+
           <div class="buttons">
-            <!-- 按下以下其中一個按鈕時，呼叫 playGame這個function(函式)，並傳入參數(剪刀/石頭/布), onclick="函式名稱(傳入的參數)" -->
-            <button onclick="playGame('scissors')">剪刀</button>
-            <button onclick="playGame('rock')">石頭</button>
-            <button onclick="playGame('paper')">布</button>
-            <!-- 如果不用onclick寫 也可以用 button + document.querySelector + 定義ID
-            例如:
-            const scissorsBtn = document.querySelector(".btn-scissors");
-            
-            ScissorsBtn.addEventListener("click", function () {
-            playGame("scissors"); });  -->
-            <button onclick="resetGame()">重新開始</button>
+            <button type="button" onclick="playGame('scissors')">
+              剪刀
+            </button>
+
+            <button type="button" onclick="playGame('rock')">
+              石頭
+            </button>
+
+            <button type="button" onclick="playGame('paper')">
+              布
+            </button>
+
+            <button type="button" onclick="resetGame()">
+              重新開始
+            </button>
           </div>
 
           <p id="score">玩家：0　哆啦A夢：0</p>
@@ -692,27 +695,44 @@ button:last-child:hover {
 
         <div class="player-box">
           <h2>玩家</h2>
+
           <div id="playerHand" class="hand-area">❔</div>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
 
     <script>
-      //////這邊是變數與資料的定義///////
+      // ========================================
+      // 遊戲狀態
+      // ========================================
+
       let gameOver = false;
       let playerScore = 0;
       let computerScore = 0;
 
+      // ========================================
+      // 圖片資料
+      // 所有圖片統一使用 WebP
+      // ========================================
+
       const playerImages = {
-        scissors: ["./img/bscissor.png"],
-        rock: ["./img/bstone.png"],
-        paper: ["./img/bpaper.png"],
+        scissors: ["./img/bscissor.webp"],
+        rock: ["./img/bstone.webp"],
+        paper: ["./img/bpaper.webp"],
       };
 
       const computerImages = {
-        scissors: ["./img/ascissor2.jpg", "./img/ascissor.png"],
-        rock: ["./img/astone.jpg", "./img/astone2.png"],
-        paper: ["./img/apaper.jpeg"],
+        scissors: [
+          "./img/ascissor2.webp",
+          "./img/ascissor.webp",
+        ],
+
+        rock: [
+          "./img/astone.webp",
+          "./img/astone2.webp",
+        ],
+
+        paper: ["./img/apaper.webp"],
       };
 
       const handNames = {
@@ -721,47 +741,81 @@ button:last-child:hover {
         paper: "布",
       };
 
-      //////這邊是變數與資料的定義///////
-
-      //////這邊是function的定義///////
+      // ========================================
+      // 隨機選擇圖片
+      // ========================================
 
       function getRandomImage(imageArray) {
-        const randomIndex = Math.floor(Math.random() * imageArray.length);
+        const randomIndex = Math.floor(
+          Math.random() * imageArray.length,
+        );
+
         return imageArray[randomIndex];
       }
 
-      function showImage(areaId, imageSrc) {
-        document.querySelector(areaId).innerHTML = `
-              <img src="${imageSrc}" alt="猜拳圖片">
-            `;
-      } //////這邊是function的定義///////
+      // ========================================
+      // 顯示出拳圖片
+      // ========================================
 
-      // 這裡是透過click button用來呼叫playGame這個function(也在定義playGame) 裡面再呼叫了getRandomImage跟showImage兩個功能
+      function showImage(areaId, imageSrc, altText) {
+        const area = document.querySelector(areaId);
+
+        area.innerHTML = `
+          <img
+            src="${imageSrc}"
+            alt="${altText}"
+          >
+        `;
+      }
+
+      // ========================================
+      // 進行一局遊戲
+      // ========================================
 
       function playGame(playerChoice) {
-        if (gameOver === true) {
+        if (gameOver) {
           return;
         }
 
         const choices = ["scissors", "rock", "paper"];
-        // choice的長度=3 從0~2.999..中取三個數字 再用Math floor取整數 0石頭, 1剪刀, 2布
-        const randomIndex = Math.floor(Math.random() * choices.length);
+
+        const randomIndex = Math.floor(
+          Math.random() * choices.length,
+        );
+
         const computerChoice = choices[randomIndex];
 
-        const playerImage = getRandomImage(playerImages[playerChoice]);
-        const computerImage = getRandomImage(computerImages[computerChoice]);
+        const playerImage = getRandomImage(
+          playerImages[playerChoice],
+        );
 
-        showImage("#playerHand", playerImage);
-        showImage("#computerHand", computerImage);
+        const computerImage = getRandomImage(
+          computerImages[computerChoice],
+        );
+
+        showImage(
+          "#playerHand",
+          playerImage,
+          `玩家出${handNames[playerChoice]}`,
+        );
+
+        showImage(
+          "#computerHand",
+          computerImage,
+          `哆啦A夢出${handNames[computerChoice]}`,
+        );
 
         let resultText = "";
 
         if (playerChoice === computerChoice) {
           resultText = "平手！";
         } else if (
-          (playerChoice === "scissors" && computerChoice === "paper") ||
-          (playerChoice === "rock" && computerChoice === "scissors") ||
-          (playerChoice === "paper" && computerChoice === "rock")
+          (playerChoice === "scissors" &&
+            computerChoice === "paper") ||
+          (playerChoice === "rock" &&
+            computerChoice === "scissors") ||
+          (playerChoice === "paper" &&
+            computerChoice === "rock")
         ) {
           resultText = "你贏了這局！";
           playerScore++;
@@ -770,49 +824,63 @@ button:last-child:hover {
           computerScore++;
         }
 
-        document.querySelector("#choiceresult").textContent =
+        document.querySelector(
+          "#choiceresult",
+        ).textContent =
           `哆啦A夢出${handNames[computerChoice]}，你出${handNames[playerChoice]}`;
 
-        document.querySelector("#winnerresult").textContent = `${resultText}`;
+        document.querySelector(
+          "#winnerresult",
+        ).textContent = resultText;
 
         document.querySelector("#score").textContent =
           `玩家：${playerScore}　哆啦A夢：${computerScore}`;
 
         if (computerScore === 3) {
-          document.querySelector("#winnerresult").innerHTML =
-            "遊戲結束，你輸了！";
+          document.querySelector(
+            "#winnerresult",
+          ).textContent = "遊戲結束，你輸了！";
+
           gameOver = true;
         }
 
         if (playerScore === 3) {
-          document.querySelector("#winnerresult").innerHTML =
-            "遊戲結束，你贏了!";
+          document.querySelector(
+            "#winnerresult",
+          ).textContent = "遊戲結束，你贏了！";
+
           gameOver = true;
         }
       }
-   
 
-      // 重新開始按鈕按下後
-   function resetGame() {
-  playerScore = 0;
-  computerScore = 0;
+      // ========================================
+      // 重新開始遊戲
+      // ========================================
 
-  gameOver = false; 
-  // 變回false狀態就能繼續遊戲
+      function resetGame() {
+        playerScore = 0;
+        computerScore = 0;
+        gameOver = false;
 
-  // 圖片回到一開始的問號
-  document.querySelector("#playerHand").textContent = "❔";
-  document.querySelector("#computerHand").textContent = "❔";
+        document.querySelector(
+          "#playerHand",
+        ).textContent = "❔";
 
-  
-  document.querySelector("#winnerresult").textContent = "";
-  document.querySelector("#choiceresult").textContent = "請選擇出拳！";
+        document.querySelector(
+          "#computerHand",
+        ).textContent = "❔";
 
-  // 分數歸零
-  document.querySelector("#score").textContent =
-    "玩家：0　哆啦A夢：0";
-}
-   
-   </script>
+        document.querySelector(
+          "#winnerresult",
+        ).textContent = "";
+
+        document.querySelector(
+          "#choiceresult",
+        ).textContent = "請選擇出拳！";
+
+        document.querySelector("#score").textContent =
+          "玩家：0　哆啦A夢：0";
+      }
+    </script>
   </body>
 </html>
