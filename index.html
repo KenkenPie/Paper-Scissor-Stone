@@ -4,122 +4,660 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>猜拳小遊戲</title>
+<style>
+ /* ========================================
+   基礎設定
+======================================== */
 
-    <style>
-      * {
-        box-sizing: border-box;
-      }
+:root {
+  --bg-page: #f5f1e9;
+  --bg-card: rgba(255, 255, 255, 0.88);
+  --bg-soft: #f8f5ef;
 
-      body {
-        margin: 0;
-        min-height: 100vh;
-        font-family: "Microsoft JhengHei", sans-serif;
-        background-color: #f8f1ff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+  --sage: #8f9d8b;
+  --sage-dark: #687565;
+  --sage-light: #e4e9e1;
 
-      .game {
-        width: 1300px;
-        background-color: white;
-        border-radius: 24px;
-        padding: 30px;
-        text-align: center;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-      }
+  --beige: #d8c7b3;
+  --beige-light: #eee5da;
 
-      .battle-area {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin: 40px 0;
-      }
+  --text-main: #4f514c;
+  --text-soft: #7c7f77;
+  --text-light: #9a9c96;
 
-      .player-box {
-        width: 400px;
-        height: 500px;
-        padding: 20px;
-        border: 3px solid #ddd6fe;
-        border-radius: 20px;
-        background-color: #faf5ff;
-      }
+  --border: rgba(126, 137, 123, 0.22);
 
-      h2 {
-        margin-bottom: 80px;
-      }
+  --shadow-soft:
+    0 18px 45px rgba(79, 81, 76, 0.1),
+    0 4px 12px rgba(79, 81, 76, 0.06);
 
-      #rule{
-        font-size:26px;
+  --shadow-card:
+    0 12px 30px rgba(79, 81, 76, 0.09),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
 
-      }
-      
-      .hand-area {
-        width: 100%;
-        height: 180px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 90px;
-      }
+* {
+  box-sizing: border-box;
+}
 
-      .hand-area img {
-        width: 300px;
-        height: 300px;
-        object-fit: contain;
-      }
+html {
+  min-height: 100%;
+}
 
-      .center {
-        width: 350px;
-      }
+body {
+  margin: 0;
+  min-height: 100vh;
 
-      .buttons {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        flex-wrap: wrap;
-        margin-top: 20px;
-      }
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-      button {
-        padding: 10px 18px;
-        border: none;
-        border-radius: 999px;
-        background-color: #a78bfa;
-        color: white;
-        font-size: 18px;
-        cursor: pointer;
-        box-shadow: 2px 2px 3px gray;
-      }
+  padding: 40px 24px;
 
-      button:hover {
-        background-color: #7c3aed;
-      }
+  font-family:
+    "Noto Sans TC",
+    "Microsoft JhengHei",
+    sans-serif;
 
-      button:active {
-        transform: scale(0.95);
-      }
+  color: var(--text-main);
 
-      #choiceresult {
-        font-size: 26px;
-        font-weight: bold;
-        color: #6d28d9;
-        line-height: 1.5;
-        text-align: center;
-      }
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(216, 199, 179, 0.28),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 85% 80%,
+      rgba(143, 157, 139, 0.22),
+      transparent 34%
+    ),
+    var(--bg-page);
+}
 
-      #winnerresult {
-        font-size: 30px;
-        font-weight: bolder;
-        color: #6d28d9;
-        line-height: 1.5;
-      }
+/* ========================================
+   遊戲主卡片
+======================================== */
 
-      #score {
-        margin-top: 20px;
-        font-size: 18px;
-      }
-    </style>
+.game {
+  position: relative;
+
+  width: min(1180px, 100%);
+
+  padding: 48px;
+
+  overflow: hidden;
+
+  text-align: center;
+
+  background: var(--bg-card);
+
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 32px;
+
+  box-shadow: var(--shadow-soft);
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* 淡淡的背景裝飾 */
+.game::before,
+.game::after {
+  content: "";
+
+  position: absolute;
+
+  width: 220px;
+  height: 220px;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+.game::before {
+  top: -100px;
+  left: -80px;
+
+  background: rgba(216, 199, 179, 0.18);
+}
+
+.game::after {
+  right: -90px;
+  bottom: -110px;
+
+  background: rgba(143, 157, 139, 0.16);
+}
+
+/* ========================================
+   標題區
+======================================== */
+
+h1 {
+  position: relative;
+  z-index: 1;
+
+  margin: 0 0 12px;
+
+  font-family:
+    Georgia,
+    "Noto Serif TC",
+    serif;
+
+  font-size: clamp(32px, 4vw, 50px);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+
+  color: var(--sage-dark);
+}
+
+#rule {
+  position: relative;
+  z-index: 1;
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: 0;
+
+  padding: 9px 18px;
+
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+
+  color: var(--sage-dark);
+  background: var(--sage-light);
+
+  border: 1px solid rgba(143, 157, 139, 0.2);
+  border-radius: 999px;
+}
+
+/* ========================================
+   對戰區
+======================================== */
+
+.battle-area {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) minmax(260px, 0.82fr) minmax(
+      240px,
+      1fr
+    );
+  align-items: stretch;
+  gap: 28px;
+
+  margin-top: 42px;
+}
+
+/* ========================================
+   玩家卡片
+======================================== */
+
+.player-box {
+  width: 100%;
+  min-height: 420px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 28px 24px 32px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.94),
+      rgba(248, 245, 239, 0.9)
+    );
+
+  border: 1px solid var(--border);
+  border-radius: 24px;
+
+  box-shadow: var(--shadow-card);
+}
+
+.player-box h2 {
+  margin: 0 0 24px;
+
+  padding: 8px 18px;
+
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+
+  color: var(--sage-dark);
+  background: var(--sage-light);
+
+  border-radius: 999px;
+}
+
+/* 左右稍微做區別 */
+.player-box:first-child h2 {
+  color: #806b59;
+  background: var(--beige-light);
+}
+
+.player-box:last-child h2 {
+  color: var(--sage-dark);
+  background: var(--sage-light);
+}
+
+/* ========================================
+   出拳圖片區
+======================================== */
+
+.hand-area {
+  width: 100%;
+  flex: 1;
+  min-height: 280px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  overflow: hidden;
+
+  font-size: 76px;
+
+  color: var(--text-light);
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.98),
+      rgba(238, 229, 218, 0.42)
+    );
+
+  border: 1px dashed rgba(143, 157, 139, 0.3);
+  border-radius: 20px;
+}
+
+.player-box:last-child .hand-area {
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.98),
+      rgba(228, 233, 225, 0.55)
+    );
+}
+
+.hand-area img {
+  display: block;
+
+  width: min(260px, 90%);
+  height: 260px;
+
+  object-fit: contain;
+
+  border-radius: 16px;
+
+  animation: hand-pop 0.28s ease;
+}
+
+@keyframes hand-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ========================================
+   中央結果區
+======================================== */
+
+.center {
+  width: 100%;
+  min-height: 420px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  padding: 30px 22px;
+
+  background: rgba(248, 245, 239, 0.72);
+
+  border: 1px solid rgba(216, 199, 179, 0.34);
+  border-radius: 24px;
+}
+
+#choiceresult {
+  min-height: 58px;
+
+  margin: 0 0 12px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.7;
+
+  color: var(--text-main);
+}
+
+#winnerresult {
+  min-height: 52px;
+
+  margin: 0 0 22px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-family:
+    Georgia,
+    "Noto Serif TC",
+    serif;
+
+  font-size: clamp(24px, 3vw, 34px);
+  font-weight: 700;
+  line-height: 1.5;
+
+  color: var(--sage-dark);
+}
+
+/* ========================================
+   按鈕區
+======================================== */
+
+.buttons {
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+
+  margin-top: 4px;
+}
+
+button {
+  min-height: 46px;
+
+  padding: 10px 14px;
+
+  border: 1px solid rgba(143, 157, 139, 0.28);
+  border-radius: 14px;
+
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+
+  color: #ffffff;
+  background: var(--sage);
+
+  cursor: pointer;
+
+  box-shadow:
+    0 7px 16px rgba(104, 117, 101, 0.17),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+button:hover {
+  background: var(--sage-dark);
+
+  border-color: var(--sage-dark);
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 20px rgba(104, 117, 101, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+button:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* 重新開始按鈕獨立一行 */
+button:last-child {
+  grid-column: 1 / -1;
+
+  color: #806b59;
+  background: var(--beige-light);
+
+  border-color: rgba(216, 199, 179, 0.55);
+
+  box-shadow: none;
+}
+
+button:last-child:hover {
+  color: #ffffff;
+  background: #a78f77;
+
+  border-color: #a78f77;
+}
+
+/* ========================================
+   分數
+======================================== */
+
+#score {
+  width: 100%;
+
+  margin: 24px 0 0;
+
+  padding: 12px 16px;
+
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+
+  color: var(--sage-dark);
+  background: rgba(228, 233, 225, 0.76);
+
+  border: 1px solid rgba(143, 157, 139, 0.18);
+  border-radius: 14px;
+}
+
+/* ========================================
+   平板版
+======================================== */
+
+@media (max-width: 960px) {
+  body {
+    align-items: flex-start;
+
+    padding: 24px 18px;
+  }
+
+  .game {
+    padding: 36px 28px;
+  }
+
+  .battle-area {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .center {
+    grid-column: 1 / -1;
+    grid-row: 2;
+
+    min-height: auto;
+  }
+
+  .player-box {
+    min-height: 360px;
+  }
+
+  .hand-area {
+    min-height: 230px;
+  }
+
+  .hand-area img {
+    width: min(220px, 88%);
+    height: 220px;
+  }
+}
+
+/* ========================================
+   手機版
+======================================== */
+
+@media (max-width: 640px) {
+  body {
+    padding: 14px;
+  }
+
+  .game {
+    padding: 28px 16px;
+
+    border-radius: 24px;
+  }
+
+  h1 {
+    font-size: 30px;
+    line-height: 1.35;
+  }
+
+  #rule {
+    font-size: 14px;
+  }
+
+  .battle-area {
+    display: flex;
+    flex-direction: column;
+
+    gap: 18px;
+
+    margin-top: 28px;
+  }
+
+  /* 手機版順序：
+     哆啦A夢 → 玩家 → 結果與按鈕
+  */
+  .player-box:first-child {
+    order: 1;
+  }
+
+  .player-box:last-child {
+    order: 2;
+  }
+
+  .center {
+    order: 3;
+  }
+
+  .player-box {
+    min-height: auto;
+
+    padding: 22px 18px;
+
+    border-radius: 20px;
+  }
+
+  .player-box h2 {
+    margin-bottom: 18px;
+
+    font-size: 18px;
+  }
+
+  .hand-area {
+    min-height: 240px;
+
+    font-size: 64px;
+  }
+
+  .hand-area img {
+    width: min(230px, 90%);
+    height: 230px;
+  }
+
+  .center {
+    min-height: auto;
+
+    padding: 26px 18px;
+
+    border-radius: 20px;
+  }
+
+  #choiceresult {
+    min-height: auto;
+
+    font-size: 16px;
+  }
+
+  #winnerresult {
+    min-height: 42px;
+
+    margin-bottom: 18px;
+
+    font-size: 25px;
+  }
+
+  .buttons {
+    grid-template-columns: 1fr;
+  }
+
+  button:last-child {
+    grid-column: auto;
+  }
+
+  button {
+    width: 100%;
+
+    min-height: 48px;
+  }
+
+  #score {
+    font-size: 15px;
+  }
+}
+
+/* ========================================
+   小尺寸手機
+======================================== */
+
+@media (max-width: 390px) {
+  .game {
+    padding-inline: 14px;
+  }
+
+  h1 {
+    font-size: 26px;
+  }
+
+  .hand-area {
+    min-height: 210px;
+  }
+
+  .hand-area img {
+    width: min(200px, 90%);
+    height: 200px;
+  }
+}
+
+/* ========================================
+   減少動態效果
+======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  button,
+  .hand-area img {
+    animation: none;
+    transition: none;
+  }
+}
+  </style>
   </head>
 
   <body>
